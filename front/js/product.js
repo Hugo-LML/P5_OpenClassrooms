@@ -5,6 +5,10 @@ async function main()
     const kanapID = getKanapID();
     const kanap = await getKanap(kanapID);
     displayKanap(kanap);
+    const quantityDefault = document.getElementById('quantity');
+    quantityDefault.setAttribute('value', '1');
+    const addToCart = document.getElementById('addToCart');
+    addToCart.addEventListener('click', addKanapToCart(kanapID));
 }
 
 // Get the id of the kanap to fetch
@@ -43,4 +47,72 @@ function displayKanap(kanap)
     title.textContent = kanap.name;
     price.textContent = kanap.price + " ";
     description.textContent = kanap.description;
+}
+
+// Get the color of the kanap added to the cart
+function getColor()
+{
+    let color = document.getElementById('colors').value;
+    return color;
+}
+
+// Get the quantity of the kanap added to the cart
+function getQuantity()
+{
+    let quantity = document.getElementById('quantity').value;
+    return parseInt(quantity);
+}
+
+// Add kanap to cart when user click on add to the cart button
+function addKanapToCart(kanapID)
+{
+    let cart = [];
+
+    return function()
+    {
+        let color = getColor();
+        let quantity = getQuantity();
+        
+        if (color == "") {
+            alert("Vous devez choisir une couleur")
+        }
+
+        if (quantity == 0) {
+            alert("Vous devez ajouter au moins un produit")
+        }
+
+        else {
+            let product = {
+                id: kanapID,
+                color: color,
+                quantity: quantity,
+            };
+
+            if (cart.length == 0) {
+                cart.push(product);
+            }
+
+            else {
+
+                function findProduct(productAlreadyInCart)
+                {
+                    return productAlreadyInCart.id == product.id && productAlreadyInCart.color == product.color;
+                }
+
+                let resultFound = cart.find(findProduct);
+
+                if (resultFound == undefined) {
+                    cart.push(product);
+                }
+
+                else {
+                    resultFound.quantity += product.quantity;
+                }                
+            }
+
+            localStorage.setItem('myCart', JSON.stringify(cart));
+            let localStorageParsed = JSON.parse(localStorage.getItem('myCart'));
+            console.log(localStorageParsed);
+        }
+    }
 }
