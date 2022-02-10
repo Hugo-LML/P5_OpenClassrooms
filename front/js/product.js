@@ -67,9 +67,15 @@ function getQuantity()
 function addKanapToCart(kanapID)
 {
     let cart = [];
+    let getCartInLS = JSON.parse(localStorage.getItem('myCart'));
 
+    if (localStorage.getItem('myCart')) {
+        cart = getCartInLS;
+    }
+    
     return function()
     {
+        let kanapTitle = document.getElementById('title').textContent;
         let color = getColor();
         let quantity = getQuantity();
         
@@ -77,7 +83,7 @@ function addKanapToCart(kanapID)
             alert("Vous devez choisir une couleur")
         }
 
-        if (quantity == 0) {
+        else if (quantity == 0) {
             alert("Vous devez ajouter au moins un produit")
         }
 
@@ -90,6 +96,7 @@ function addKanapToCart(kanapID)
 
             if (cart.length == 0) {
                 cart.push(product);
+                popUpProductAddedToCart(kanapTitle, product.color, product.quantity);
             }
 
             else {
@@ -103,10 +110,12 @@ function addKanapToCart(kanapID)
 
                 if (resultFound == undefined) {
                     cart.push(product);
+                    popUpProductAddedToCart(kanapTitle, product.color, product.quantity);
                 }
 
                 else {
                     resultFound.quantity += product.quantity;
+                    popUpProductAddedToCart(kanapTitle, product.color, product.quantity);
                 }                
             }
 
@@ -115,4 +124,25 @@ function addKanapToCart(kanapID)
             console.log(localStorageParsed);
         }
     }
+}
+
+// Create a pop up with the informations of the product added to the cart
+function popUpProductAddedToCart(name, color, quantity)
+{
+    const itemContent = document.querySelector('.item__content');
+    const popUpDiv = document.createElement('div');
+    const popUpText = document.createElement('p');
+    popUpDiv.appendChild(popUpText);
+    itemContent.appendChild(popUpDiv);
+
+    popUpDiv.style.padding = "10px";
+    popUpDiv.style.backgroundColor = "white";
+    popUpDiv.style.borderRadius = "10px";
+    popUpDiv.style.textAlign = "center";
+    popUpDiv.style.maxWidth = "100%";
+    popUpDiv.style.marginTop = "32px";
+
+    popUpText.textContent = "Vous venez d'ajouter " + quantity + " " + name + " " + color + " à votre panier !";
+    popUpText.style.color = "black";
+    popUpText.style.fontWeight = "700";
 }
