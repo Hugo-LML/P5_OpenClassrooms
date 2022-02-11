@@ -4,7 +4,6 @@ async function main()
 {
     const kanaps = await getKanaps();
     displayKanaps(kanaps);
-    //getKanapsID()
 }
 
 // Get all kanaps available
@@ -58,18 +57,3 @@ function displayKanaps(kanaps)
         
     }
 }
-/*
-function getKanapsID()
-{
-    cards = document.getElementsByClassName('card');
-    for (let i = 0; i < cards.length; i++)
-    {
-        cards[i].addEventListener("click", function()
-        {
-            let url = (new URL(document.location));
-            let id = url.searchParams.get('id');
-            alert(id);
-        });
-    }
-}
-*/

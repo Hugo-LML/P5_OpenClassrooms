@@ -42,11 +42,18 @@ function displayKanap(kanap)
     let title = document.getElementById('title');
     let price = document.getElementById('price');
     let description = document.getElementById('description');
+    let colors = document.getElementById('colors');
 
     img.src = kanap.imageUrl;
     title.textContent = kanap.name;
     price.textContent = kanap.price + " ";
     description.textContent = kanap.description;
+    for (let i = 0; i < kanap.colors.length; i++) {
+        let option = document.createElement('option');
+        option.value = kanap.colors[i];
+        option.textContent = kanap.colors[i];
+        colors.appendChild(option);
+    }
 }
 
 // Get the color of the kanap added to the cart
@@ -120,8 +127,6 @@ function addKanapToCart(kanapID)
             }
 
             localStorage.setItem('myCart', JSON.stringify(cart));
-            let localStorageParsed = JSON.parse(localStorage.getItem('myCart'));
-            console.log(localStorageParsed);
         }
     }
 }
