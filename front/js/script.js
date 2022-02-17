@@ -7,19 +7,19 @@ async function main()
 }
 
 // Get all kanaps available
-function getKanaps()
+async function getKanaps()
 {
     const url = "http://localhost:3000/api/products";
     const section = document.getElementById('items');
 
     return fetch(url)
         .then((response) => {
-            return response.json(); // Result of the function which will be the argument of the function displayKanaps   (kanaps)
+            return response.json(); // Result of the function which will be the argument of the function displayKanaps
         })
         .catch((error) => {
             let myError = document.createElement('h3');
             section.appendChild(myError);
-            myError.textContent = "Whoops, something went wrong ! " + error; 
+            myError.textContent = "Whoops, something went wrong ! " + error;
         })
 }
 

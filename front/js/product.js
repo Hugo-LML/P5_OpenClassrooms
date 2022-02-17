@@ -20,7 +20,7 @@ function getKanapID()
 }
 
 // Get the kanap object to display
-function getKanap(kanapID)
+async function getKanap(kanapID)
 {
     const url = "http://localhost:3000/api/products/" + kanapID;
     return fetch(url)
@@ -108,6 +108,7 @@ function addKanapToCart(kanapID)
 
             else {
 
+                // Function returning product in cart with same id and same color as product added to cart
                 function findProduct(productAlreadyInCart)
                 {
                     return productAlreadyInCart.id == product.id && productAlreadyInCart.color == product.color;
@@ -115,17 +116,20 @@ function addKanapToCart(kanapID)
 
                 let resultFound = cart.find(findProduct);
 
+                // resultFound is undefined if there is no product already in cart with same id and color as product added to cart
                 if (resultFound == undefined) {
                     cart.push(product);
                     popUpProductAddedToCart(kanapTitle, product.color, product.quantity);
                 }
 
+                // If findProduct() returned a product with same id and same color as product added to cart, its quantity is increased
                 else {
                     resultFound.quantity += product.quantity;
                     popUpProductAddedToCart(kanapTitle, product.color, product.quantity);
                 }                
             }
 
+            // cart array is set in local storage to access it on any pages
             localStorage.setItem('myCart', JSON.stringify(cart));
         }
     }

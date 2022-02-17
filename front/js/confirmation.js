@@ -1,5 +1,6 @@
 main()
 
+// Display the order id and remove it from the LS
 function main()
 {
     let myOrder = localStorage.getItem('myOrder');
