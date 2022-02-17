@@ -90,7 +90,7 @@ function addKanapToCart(kanapID)
             alert("Vous devez choisir une couleur")
         }
 
-        else if (quantity == 0) {
+        else if (quantity <= 0) {
             alert("Vous devez ajouter au moins un produit")
         }
 
