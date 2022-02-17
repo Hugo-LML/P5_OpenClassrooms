@@ -177,6 +177,7 @@ function formVerification()
     
     let regExLetters = /[A-Za-zÀ-ÖØ-öø-ÿ-'\s]/;
     let regExLettersAndNumbers = /[A-Za-zÀ-ÖØ-öø-ÿ0-9-'\s]/;
+    let regExEmailCharacters = /[A-Za-z0-9-.!#$%&'*+-/=?^_`{|}~@]/;
     
     let order = document.getElementById('order');
     
@@ -195,6 +196,61 @@ function formVerification()
     city.addEventListener('change', function() {
         spacesGestion(city);
         checkInput(city, cityErrorMsg, regExLetters, "Ce champ ne doit contenir que des lettres");
+    });
+    email.addEventListener('change', function() {
+        spacesGestion(email);
+        checkInput(email, emailErrorMsg, regExEmailCharacters, "Ce champ ne doit contenir que des charactères autorisés dans une adresse email");
+    });
+
+    order.addEventListener('click', function(event)
+    {
+        if (firstNameErrorMsg.textContent != "" || firstName.value == ""
+            || lastNameErrorMsg.textContent != "" || lastName.value == ""
+            || addressErrorMsg.textContent != "" || address.value == ""
+            || cityErrorMsg.textContent != "" || city.value == ""
+            || emailErrorMsg.textContent != "" || email.value == "") {
+            alert('Remplissez correctement les champs');
+            event.preventDefault();
+        }
+        else {
+            let cartLength = JSON.parse(localStorage.getItem('myCart'));
+            if (cartLength.length == 0) {
+                alert('Votre panier est vide');
+                event.preventDefault();
+            }
+            else {
+                let contact = getContactUserData(firstName, lastName, address, city, email);
+                let products = getCartId();
+                let order = {
+                    contact: contact,
+                    products: products
+                };
+
+                let url = "http://localhost:3000/api/products/order";
+                let fetchData = {
+                    method: 'POST',
+                    body: JSON.stringify(order),
+                    headers: new Headers({
+                        'Accept': 'application/json',
+                        "Content-Type": "application/json"
+                    })
+                }
+                fetch(url, fetchData)
+                    .then((response) => {
+                        return response.json();
+                    })
+                    .then((data) => {
+                        localStorage.removeItem('myCart');
+                        let myCart = [];
+                        localStorage.setItem('myCart', JSON.stringify(myCart));
+                        localStorage.setItem('myOrder', data.orderId);
+                        window.location.href = "confirmation.html";
+                    })
+                    .catch((error) => {
+                        alert(error);
+                    });
+            }
+        }
     });
 }
 
@@ -222,4 +278,28 @@ function checkInput(input, inputErrorMsg, regEx, errorMsg)
     else {
         inputErrorMsg.textContent = "";
     }
+}
+
+function getContactUserData(firstName, lastName, address, city, email)
+{
+    let contact = {
+        firstName: firstName.value,
+        lastName: lastName.value,
+        address: address.value,
+        city: city.value,
+        email: email.value
+    };
+
+    return contact;
+}
+
+function getCartId()
+{
+    let cartId = JSON.parse(localStorage.getItem('myCart'));
+    let products = [];
+    for (let i = 0; i < cartId.length; i++) {
+        products.push(cartId[i].id);
+    }
+
+    return products;
 }
