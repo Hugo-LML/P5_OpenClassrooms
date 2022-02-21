@@ -293,6 +293,11 @@ function checkInput(input, inputErrorMsg, regEx, errorMsg)
     else {
         inputErrorMsg.textContent = "";
     }
+    if (input == email) {
+        if (!input.value.includes("@")) {
+            inputErrorMsg.textContent = "L'adresse email doit contenir un @";
+        }
+    }
 }
 
 // Return an object with the user contact data
