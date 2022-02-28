@@ -256,12 +256,11 @@ function formVerification()
                         return response.json();
                     })
                     .then((data) => {
-                        // Empty the cart, store the order id in LS, load confirmation page
+                        // Empty the cart, store the order id in url, load confirmation page
                         localStorage.removeItem('myCart');
                         let myCart = [];
                         localStorage.setItem('myCart', JSON.stringify(myCart));
-                        localStorage.setItem('myOrder', data.orderId);
-                        window.location.href = "confirmation.html";
+                        window.location.href = "confirmation.html?id=" + data.orderId;
                     })
                     .catch((error) => {
                         // Display error

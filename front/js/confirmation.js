@@ -1,10 +1,10 @@
 main()
 
-// Display the order id and remove it from the LS
+// Display the order id
 function main()
 {
-    let myOrder = localStorage.getItem('myOrder');
+    let urlOrder = (new URL(document.location.href));
+    let id = urlOrder.searchParams.get('id');
     let spanOrder = document.getElementById('orderId');
-    spanOrder.textContent = myOrder;
-    localStorage.removeItem('myOrder');
+    spanOrder.textContent = id;
 }

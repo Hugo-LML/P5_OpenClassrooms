@@ -94,6 +94,10 @@ function addKanapToCart(kanapID)
             alert("Vous devez ajouter au moins un produit")
         }
 
+        else if (quantity > 100) {
+            alert("Vous ne pouvez pas ajouter plus de 100 produits")
+        }
+
         else {
             let product = {
                 id: kanapID,
